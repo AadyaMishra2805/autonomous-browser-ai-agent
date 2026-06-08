@@ -1,11 +1,29 @@
+import os
+
 from fastapi import FastAPI
 from playwright.sync_api import sync_playwright
+from tavily import TavilyClient
 
 app = FastAPI()
 
+TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY")
+
 
 @app.get("/search")
-def search(query: str):
+def search(query: str, provider: str = "bing"):
+
+    if provider == "tavily":
+        if not TAVILY_API_KEY:
+            # Fall back to Bing if no Tavily API key is configured
+            provider = "bing"
+        else:
+            client = TavilyClient(api_key=TAVILY_API_KEY)
+            response = client.search(query=query, max_results=5)
+            results_data = [
+                {"title": r["title"], "link": r["url"]}
+                for r in response["results"]
+            ]
+            return {"query": query, "results": results_data}
 
     results_data = []
 
