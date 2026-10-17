@@ -168,6 +168,9 @@ https://your-ngrok-url.ngrok-free.app
 
 # 🔄 n8n Workflow
 
+For an optional workflow that searches the web and fetches page excerpts directly
+from n8n, see [Parallel Search MCP setup](docs/parallel-search-n8n.md).
+
 Workflow:
 
 ```text
